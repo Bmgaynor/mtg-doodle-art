@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Quicken Doodle Card</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Caveat+Brush&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 700px; height: 900px; box-sizing: border-box; padding: 40px; background: #F3EFE6; font-family: 'Patrick Hand', sans-serif; color: #1F2430; display: flex; flex-direction: column; align-items: center; gap: 14px">
+  <div style="width: 500px; height: 700px; box-sizing: border-box; background: #FFFDF6; border: 6px solid #1F2430; border-radius: 26px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+    <div style="border: 4px solid #1F2430; border-radius: 14px; padding: 6px 14px; display: flex; align-items: center; justify-content: space-between; background: #FFFFFF">
+      <div style="font-family: 'Caveat Brush', cursive; font-size: 36px">Quicken</div>
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#1F2430" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-label="One blue mana">
+        <circle cx="20" cy="20" r="16" fill="#9CCFEA"/>
+        <path d="M20 9 C26 17 29 21 29 25 C29 30 25 33 20 33 C15 33 11 30 11 25 C11 21 14 17 20 9 Z" fill="#FFFFFF"/>
+      </svg>
+    </div>
+    <div style="flex: 1; border: 4px solid #1F2430; border-radius: 12px; background: #CFE0F2; overflow: hidden">
+      <svg viewBox="0 0 440 380" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#1F2430" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-label="Doodle of an hourglass with falling sand and a spark of lightning">
+        <path d="M0 340 C100 326 340 326 440 340" stroke-width="4"/>
+        <path d="M130 56 L310 56" stroke-width="9"/>
+        <path d="M130 332 L310 332" stroke-width="9"/>
+        <path d="M148 56 C148 120 196 160 214 190 C196 220 148 260 148 332 M292 56 C292 120 244 160 226 190 C244 220 292 260 292 332" fill="#FFFFFF" fill-opacity="0.55"/>
+        <path d="M164 70 C170 112 200 140 220 160 C240 140 270 112 276 70 Z" fill="#F2C14E"/>
+        <path d="M220 172 L220 270" stroke-width="3" stroke-dasharray="2 9"/>
+        <path d="M188 332 C196 296 206 276 220 268 C234 276 244 296 252 332 Z" fill="#F2C14E"/>
+        <path d="M60 120 L88 120 L70 160 L100 160 L56 236 L68 176 L42 176 Z" fill="#F7E04A"/>
+        <path d="M360 90 L388 90 L372 126 L400 126 L362 192 L372 140 L350 140 Z" fill="#F7E04A"/>
+        <path d="M112 280 C98 270 96 254 108 246 M330 284 C344 274 346 258 334 250" stroke-width="4"/>
+        <circle cx="96" cy="44" r="6"/>
+        <circle cx="352" cy="40" r="6"/>
+        <circle cx="404" cy="260" r="5"/>
+      </svg>
+    </div>
+    <div style="border: 4px solid #1F2430; border-radius: 12px; padding: 4px 14px; font-size: 26px; background: #FFFFFF">Instant</div>
+    <div style="border: 4px solid #1F2430; border-radius: 12px; padding: 12px 14px; font-size: 26px; line-height: 1.2; min-height: 110px; background: #FFFFFF; display: flex; flex-direction: column; gap: 8px">
+      <div>The next sorcery card you cast this turn can be cast as though it had flash.</div>
+      <div>Draw a card.</div>
+    </div>
+  </div>
+  <div style="font-size: 22px; color: #4A5060">Quicken, doodle proxy</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":700,"height":900}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

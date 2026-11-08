@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Abandon Attachments Doodle Card</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Caveat+Brush&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 700px; height: 900px; box-sizing: border-box; padding: 40px; background: #F3EFE6; font-family: 'Patrick Hand', sans-serif; color: #1F2430; display: flex; flex-direction: column; align-items: center; gap: 14px">
+  <div style="width: 500px; height: 700px; box-sizing: border-box; background: #FFFDF6; border: 6px solid #1F2430; border-radius: 26px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+    <div style="border: 4px solid #1F2430; border-radius: 14px; padding: 6px 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #FFFFFF">
+      <div style="font-family: 'Caveat Brush', cursive; font-size: 30px; min-width: 0">Abandon Attachments</div>
+      <div style="display: flex; gap: 4px; flex: none"><span style="min-width:34px;height:34px;box-sizing:border-box;border:3px solid #1F2430;border-radius:50%;background:#E0DCD0;display:inline-flex;align-items:center;justify-content:center;font-family:'Caveat Brush',cursive;font-size:22px;line-height:1">1</span><svg width="34" height="34" viewBox="0 0 40 40" fill="none" stroke="#1F2430" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Blue or red hybrid mana" role="img"><path d="M20 4 A16 16 0 0 0 20 36 Z" fill="#9CCFEA" stroke="none"/><path d="M20 4 A16 16 0 0 1 20 36 Z" fill="#F0A58A" stroke="none"/><circle cx="20" cy="20" r="16"/><path d="M20 4 L20 36"/></svg></div>
+    </div>
+    <div style="flex: 1; min-height: 0; border: 4px solid #1F2430; border-radius: 12px; background: #D9C9F0; overflow: hidden"><svg viewBox="0 0 440 380" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#1F2430" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Doodle of a calm figure sitting cross-legged on a rock with glowing orbs drifting away"><defs><filter id="wobAbandon" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="73" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5"/></filter></defs><rect x="-10" y="-10" width="460" height="400" fill="#D9C9F0" stroke="none"/><g filter="url(#wobAbandon)"><circle cx="220" cy="170" r="130" fill="#EBDDFA" stroke-width="3" stroke-dasharray="2 12"/><path d="M0 330 C100 320 200 335 440 318 L440 380 L0 380 Z" fill="#8A7BA8"/><path d="M130 335 C140 300 180 288 220 288 C260 288 300 300 310 335 Z" fill="#B8A9D0"/><path d="M170 290 C170 250 190 232 220 232 C250 232 270 250 270 290 Z" fill="#F0A58A"/><path d="M180 290 C195 276 245 276 260 290" stroke-width="4"/><circle cx="220" cy="206" r="22" fill="#F6D9B8"/><path d="M210 206 q4 3 8 0 M226 206 q4 3 8 0" stroke-width="3"/><path d="M212 216 q8 5 16 0" stroke-width="3"/><path d="M200 198 C204 184 236 184 240 198" fill="#5A3A2A" stroke-width="4"/><path d="M176 268 C186 258 198 260 204 268 M264 268 C254 258 242 260 236 268" stroke-width="4"/><circle cx="80" cy="90" r="20" fill="#9CCFEA"/><circle cx="80" cy="90" r="8" fill="#FFFFFF" stroke="none"/><circle cx="350" cy="70" r="16" fill="#F0A58A"/><circle cx="350" cy="70" r="6" fill="#FFFFFF" stroke="none"/><circle cx="380" cy="160" r="12" fill="#9CCFEA"/><circle cx="60" cy="190" r="12" fill="#F0A58A"/><path d="M96 104 C120 130 150 150 176 190" stroke-width="3" stroke-dasharray="3 10"/><path d="M336 84 C316 110 290 140 266 190" stroke-width="3" stroke-dasharray="3 10"/><path d="M110 40 C140 20 170 40 150 60 C130 78 100 60 120 48" stroke-width="3"/><path d="M300 30 C330 14 360 34 340 50" stroke-width="3"/></g></svg></div>
+    <div style="border: 4px solid #1F2430; border-radius: 12px; padding: 4px 14px; font-size: 25px; background: #FFFFFF">Instant — Lesson</div>
+    <div style="border: 4px solid #1F2430; border-radius: 12px; padding: 10px 14px; font-size: 24px; line-height: 1.2; background: #FFFFFF; display: flex; flex-direction: column; gap: 6px">
+      <div>You may discard a card. If you do, draw two cards.</div>
+      <div style="border-top: 2px solid #1F2430; padding-top: 6px; font-style: italic">“Learn to let her go, or you cannot let the pure cosmic energy flow in from the universe.”</div>
+      <div style="font-style: italic">—Guru Pathik</div>
+    </div>
+  </div>
+  <div style="font-size: 22px; color: #4A5060">Abandon Attachments, doodle proxy</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":700,"height":900}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

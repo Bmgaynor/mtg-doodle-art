@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Doodle Card Template</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Caveat+Brush&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 700px; height: 900px; box-sizing: border-box; padding: 40px; background: #F3EFE6; font-family: 'Patrick Hand', sans-serif; color: #1F2430; display: flex; flex-direction: column; align-items: center; gap: 14px">
+  <div style="width: 500px; height: 700px; box-sizing: border-box; background: #FFFDF6; border: 6px solid #1F2430; border-radius: 26px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+    <div style="border: 4px solid #1F2430; border-radius: 14px; padding: 6px 14px; display: flex; align-items: center; justify-content: space-between; background: #FFFFFF">
+      <div style="font-family: 'Caveat Brush', cursive; font-size: 36px">[CARD NAME]</div>
+      <div style="font-family: 'Caveat Brush', cursive; font-size: 28px">[COST]</div>
+    </div>
+    <div style="flex: 1; border: 4px dashed #1F2430; border-radius: 12px; background: {{artTint}}; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #4A5060">[DOODLE ART]</div>
+    <div style="border: 4px solid #1F2430; border-radius: 12px; padding: 4px 14px; font-size: 26px; background: #FFFFFF">[TYPE LINE]</div>
+    <div style="border: 4px solid #1F2430; border-radius: 12px; padding: 12px 14px; font-size: 26px; line-height: 1.2; min-height: 110px; background: #FFFFFF">[RULES TEXT]</div>
+    <div style="display: flex; justify-content: flex-end; align-items: center">
+      <div style="border: 4px solid #1F2430; border-radius: 12px; padding: 0 16px; font-family: 'Caveat Brush', cursive; font-size: 32px; background: #FFFFFF">[P/T]</div>
+    </div>
+  </div>
+  <div style="font-size: 22px; color: #4A5060">Template, copy for each new card</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"artTint":{"editor":"color","default":"#CFE0F2","options":["#CFE0F2","#E9E4D2","#D3B9B0","#CFE6D2"]},"$preview":{"width":700,"height":900}}'>
+class Component extends DCLogic {
+renderVals() {
+return { artTint: this.props.artTint ?? '#CFE0F2' };
+}
+}
+</script>
+</body>
+</html>

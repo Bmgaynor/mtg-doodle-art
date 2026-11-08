@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Doodle Card Maker</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Caveat+Brush&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+input,textarea,button{font-family:'Patrick Hand',sans-serif;color:#1F2430}
+input:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid #2F6FB5;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 1500px; height: 820px; box-sizing: border-box; background: #F3EFE6; font-family: 'Patrick Hand', sans-serif; color: #1F2430; display: flex; flex-direction: row">
+  <div style="width: 400px; box-sizing: border-box; padding: 28px 24px; display: flex; flex-direction: column; gap: 12px; border-right: 4px solid #1F2430">
+    <h1 style="margin: 0; font-family: 'Caveat Brush', cursive; font-size: 40px; font-weight: 400">Doodle Card Maker</h1>
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <label for="link" style="font-size: 20px">Scryfall link</label>
+      <div style="display: flex; gap: 8px">
+        <input id="link" type="text" placeholder="https://scryfall.com/card/pio/69/quicken" value="{{link}}" onChange="{{setLink}}" style="flex: 1; min-width: 0; height: 44px; box-sizing: border-box; padding: 0 12px; font-size: 18px; border: 3px solid #1F2430; border-radius: 10px; background: #FFFFFF">
+        <button type="button" onClick="{{loadCard}}" style="{{loadBtnStyle}}">Make card</button>
+      </div>
+      <div style="font-size: 17px; color: #4A5060; min-height: 40px">{{status}}</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px; min-height: 44px">
+      <input id="bw" type="checkbox" checked="{{bw}}" onChange="{{toggleBw}}" style="width: 26px; height: 26px; margin: 0; accent-color: #1F2430">
+      <label for="bw" style="font-size: 22px">Black and white filter</label>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px; border-top: 3px dashed #1F2430; padding-top: 14px">
+      <label for="reprompt" style="font-size: 20px">Reprompt with more info</label>
+      <textarea id="reprompt" rows="3" placeholder="e.g. make the hat bigger, add lightning, tighten the rules text" value="{{instruction}}" onChange="{{setInstruction}}" style="box-sizing: border-box; padding: 8px 12px; font-size: 20px; line-height: 1.2; border: 3px solid #1F2430; border-radius: 10px; background: #FFFFFF; resize: none">{{instruction}}</textarea>
+      <div style="display: flex; align-items: center; gap: 12px">
+        <button type="button" onClick="{{reprompt}}" style="{{promptBtnStyle}}">Update card</button>
+        <div style="flex: 1; font-size: 17px; color: #4A5060; line-height: 1.2">{{note}}</div>
+      </div>
+    </div>
+  </div>
+  <div style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 30px; padding: 30px">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+      <div style="font-size: 22px; color: #4A5060">Original printing</div>
+      <sc-if value="{{showBuiltin}}" hint-placeholder-val="{{ false }}">
+        <img src="/_blob/64bcda09fb1ec73e0c2511d4726bd69e" alt="Original printing of the Wizard token" style="width: 500px; height: 700px; object-fit: contain; border-radius: 26px">
+      </sc-if>
+      <sc-if value="{{showUploaded}}" hint-placeholder-val="{{ false }}">
+        <img src="{{origUrl}}" alt="Original printing of the card" style="width: 500px; height: 700px; object-fit: contain; border-radius: 26px">
+      </sc-if>
+      <sc-if value="{{showPlaceholder}}" hint-placeholder-val="{{ true }}">
+        <div style="width: 500px; height: 700px; box-sizing: border-box; border: 4px dashed #1F2430; border-radius: 26px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 30px; text-align: center; font-size: 22px; color: #4A5060">
+          <div>Scryfall images cannot load in this view.</div>
+          <sc-if value="{{hasLink}}" hint-placeholder-val="{{ false }}">
+            <a href="{{scryfallHref}}" target="_blank" rel="noopener" style="font-size: 22px; color: #1F4E8C">Open the original on Scryfall</a>
+          </sc-if>
+          <label for="orig" style="font-size: 20px">Or add a screenshot of it:</label>
+          <input id="orig" type="file" accept="image/*" onChange="{{addOriginal}}" style="font-size: 18px; max-width: 100%">
+          <div style="font-size: 17px">{{origNote}}</div>
+        </div>
+      </sc-if>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+      <div style="font-size: 22px; color: #4A5060">Doodle version</div>
+    <div style="width: 500px; height: 700px; box-sizing: border-box; background: #FFFDF6; border: 6px solid #1F2430; border-radius: 26px; padding: 18px; display: flex; flex-direction: column; gap: 12px; filter: {{filterCss}}">
+      <div style="border: 4px solid #1F2430; border-radius: 14px; padding: 6px 14px; display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; min-height: 56px; box-sizing: border-box">
+        <div style="font-family: 'Caveat Brush', cursive; font-size: 36px">{{name}}</div>
+        <sc-if value="{{hasCost}}" hint-placeholder-val="{{ true }}">
+          <div style="min-width: 40px; height: 40px; padding: 0 6px; box-sizing: border-box; border: 3.5px solid #1F2430; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-family: 'Caveat Brush', cursive; font-size: 24px; background: {{pipFill}}">{{cost}}</div>
+        </sc-if>
+      </div>
+      <div style="flex: 1; border: 4px solid #1F2430; border-radius: 12px; overflow: hidden; background: {{artBg}}">
+        <sc-if value="{{isHourglass}}" hint-placeholder-val="{{ true }}">
+          <svg viewBox="0 0 440 380" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#1F2430" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-label="Doodle of an hourglass with falling sand">
+            <path d="M0 340 C100 326 340 326 440 340" stroke-width="4"/>
+            <path d="M130 56 L310 56" stroke-width="9"/>
+            <path d="M130 332 L310 332" stroke-width="9"/>
+            <path d="M148 56 C148 120 196 160 214 190 C196 220 148 260 148 332 M292 56 C292 120 244 160 226 190 C244 220 292 260 292 332" fill="#FFFFFF" fill-opacity="0.55"/>
+            <path d="M164 70 C170 112 200 140 220 160 C240 140 270 112 276 70 Z" fill="#F2C14E"/>
+            <path d="M220 172 L220 270" stroke-width="3" stroke-dasharray="2 9"/>
+            <path d="M188 332 C196 296 206 276 220 268 C234 276 244 296 252 332 Z" fill="#F2C14E"/>
+            <path d="M60 120 L88 120 L70 160 L100 160 L56 236 L68 176 L42 176 Z" fill="#F7E04A"/>
+            <path d="M360 90 L388 90 L372 126 L400 126 L362 192 L372 140 L350 140 Z" fill="#F7E04A"/>
+            <circle cx="96" cy="44" r="6"/>
+            <circle cx="352" cy="40" r="6"/>
+          </svg>
+        </sc-if>
+        <sc-if value="{{isWizard}}" hint-placeholder-val="{{ false }}">
+          <svg viewBox="0 0 440 380" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#1F2430" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-label="Doodle of a small hat-wearing fire wizard">
+            <path d="M0 330 L40 270 L70 320 L110 250 L140 330 L0 330 Z" fill="#B88A6B"/>
+            <path d="M440 330 L400 262 L370 320 L330 240 L300 330 L440 330 Z" fill="#B88A6B"/>
+            <path d="M150 340 C140 300 150 250 170 230 C200 218 240 218 270 230 C292 250 300 300 290 340 C250 352 190 352 150 340 Z" fill="#E8C98A"/>
+            <path d="M170 232 C150 200 140 160 160 140 C190 128 250 128 280 140 C300 160 290 200 270 232 C240 244 200 244 170 232 Z" fill="#B0305A"/>
+            <path d="M180 128 C190 90 205 60 222 30 C240 60 258 92 262 128 C240 138 205 138 180 128 Z" fill="#E08A3C"/>
+            <path d="M176 130 C200 142 246 142 268 130" stroke-width="6"/>
+            <circle cx="205" cy="120" r="5" fill="#FFE27A" stroke-width="3"/>
+            <circle cx="240" cy="120" r="5" fill="#FFE27A" stroke-width="3"/>
+            <path d="M160 160 C130 140 112 112 100 88" stroke-width="22" stroke="#B0305A"/>
+            <path d="M160 160 C130 140 112 112 100 88" stroke-width="5"/>
+            <path d="M282 160 C312 140 330 112 342 88" stroke-width="22" stroke="#B0305A"/>
+            <path d="M282 160 C312 140 330 112 342 88" stroke-width="5"/>
+            <path d="M88 84 C74 66 80 44 96 34 C100 52 112 56 112 70 C112 80 100 90 88 84 Z" fill="#F7A126"/>
+            <path d="M354 84 C368 66 362 44 346 34 C342 52 330 56 330 70 C330 80 342 90 354 84 Z" fill="#F7A126"/>
+            <path d="M175 340 C165 356 150 362 138 356 C140 342 158 332 175 336 Z M268 340 C278 356 292 362 304 356 C302 342 284 332 268 336 Z" fill="#D9A441"/>
+          </svg>
+        </sc-if>
+        <sc-if value="{{isCustom}}" hint-placeholder-val="{{ false }}">
+          <svg viewBox="0 0 440 380" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#1F2430" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-label="Doodle redrawn from your instructions">
+            <sc-for list="{{shapes}}" as="sh" hint-placeholder-count="6">
+              <path d="{{sh.d}}" fill="{{sh.fill}}"/>
+            </sc-for>
+          </svg>
+        </sc-if>
+        <sc-if value="{{isNoArt}}" hint-placeholder-val="{{ false }}">
+          <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 26px; color: #4A5060">No art</div>
+        </sc-if>
+      </div>
+      <div style="border: 4px solid #1F2430; border-radius: 12px; padding: 4px 14px; font-size: 26px; background: #FFFFFF; min-height: 46px; box-sizing: border-box">{{type}}</div>
+      <div style="border: 4px solid #1F2430; border-radius: 12px; padding: 12px 14px; font-size: 26px; line-height: 1.2; min-height: 110px; background: #FFFFFF; white-space: pre-line">{{rules}}</div>
+      <sc-if value="{{hasPt}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; justify-content: flex-end; align-items: center">
+          <div style="border: 4px solid #1F2430; border-radius: 12px; padding: 0 16px; font-family: 'Caveat Brush', cursive; font-size: 32px; background: #FFFFFF">{{pt}}</div>
+        </div>
+      </sc-if>
+    </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1500,"height":820}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = {
+link: '',
+name: 'Quicken',
+cost: 'U',
+pt: '',
+type: 'Instant',
+rules: 'The next sorcery card you cast this turn can be cast as though it had flash.\nDraw a card.',
+art: 'hourglass',
+bw: false,
+instruction: '',
+origSample: '',
+origUrl: '',
+origNote: '',
+busy: false,
+note: '',
+shapes: [],
+artBg: '#E9E4D2',
+status: 'Paste a Scryfall link and press Make card.'
+};
+}
+renderVals() {
+const s = this.state;
+const samples = {
+quicken: { origSample: '', name: 'Quicken', cost: 'U', pt: '', type: 'Instant', rules: 'The next sorcery card you cast this turn can be cast as though it had flash.\nDraw a card.', art: 'hourglass' },
+wizard: { origSample: 'wizard', name: 'Wizard', cost: '', pt: '0/1', type: 'Token Creature \u2014 Wizard', rules: 'Whenever you cast a noncreature spell, this token deals 1 damage to each opponent.', art: 'wizard' }
+};
+const pips = { W: '#F4EBC8', U: '#9CCFEA', B: '#B9A9B8', R: '#F0A58A', G: '#A8D5A0' };
+const first = (s.cost || '').trim().charAt(0).toUpperCase();
+const artBgs = { hourglass: '#CFE0F2', wizard: '#CFE6E4', none: '#E9E4D2', custom: s.artBg };
+return {
+link: s.link,
+name: s.name,
+cost: s.cost,
+pt: s.pt,
+type: s.type,
+rules: s.rules,
+bw: s.bw,
+status: s.status,
+hasCost: (s.cost || '').trim() !== '',
+hasPt: (s.pt || '').trim() !== '',
+pipFill: pips[first] || '#E0DCD0',
+artBg: artBgs[s.art],
+isHourglass: s.art === 'hourglass',
+isWizard: s.art === 'wizard',
+isNoArt: s.art === 'none',
+isCustom: s.art === 'custom',
+shapes: s.shapes,
+origUrl: s.origUrl,
+origNote: s.origNote,
+showBuiltin: s.origSample === 'wizard',
+showUploaded: s.origSample !== 'wizard' && s.origUrl !== '',
+showPlaceholder: s.origSample !== 'wizard' && s.origUrl === '',
+hasLink: /^https:\/\/scryfall\.com\//i.test((s.link || '').trim()),
+scryfallHref: (s.link || '').trim(),
+addOriginal: async (e) => {
+const file = e.target.files && e.target.files[0];
+if (!file) { return; }
+let assets = null;
+try { assets = (window.claude && window.claude.use) ? await window.claude.use('assets') : null; } catch (err) { assets = null; }
+if (!assets) { this.setState({ origNote: 'Adding an image is not available in this view.' }); return; }
+this.setState({ origNote: 'Adding...' });
+try {
+const r = await assets.upload(file);
+this.setState({ origUrl: r.url, origNote: '' });
+} catch (err) {
+this.setState({ origNote: 'Could not add that image.' });
+}
+},
+instruction: s.instruction,
+note: s.note,
+promptBtnStyle: 'height: 44px; padding: 0 18px; font-size: 20px; border: 3px solid #1F2430; border-radius: 10px; cursor: pointer; background: #F2C14E; opacity: ' + (s.busy ? '0.5' : '1'),
+setInstruction: (e) => this.setState({ instruction: e.target.value }),
+filterCss: s.bw ? 'grayscale(1) contrast(1.15)' : 'none',
+loadBtnStyle: 'height: 44px; padding: 0 18px; font-size: 20px; border: 3px solid #1F2430; border-radius: 10px; cursor: pointer; background: #F2C14E; opacity: ' + (s.busy ? '0.5' : '1'),
+setLink: (e) => this.setState({ link: e.target.value }),
+toggleBw: () => this.setState({ bw: !s.bw }),
+reprompt: async () => {
+const text = (this.state.instruction || '').trim();
+if (this.state.busy) { return; }
+if (!text) { this.setState({ note: 'Type what to change first.' }); return; }
+let sample = null;
+try { sample = (window.claude && window.claude.use) ? await window.claude.use('sample') : null; } catch (err) { sample = null; }
+if (!sample) { this.setState({ note: 'Reprompting needs Claude access, which is not available in this view.' }); return; }
+const cur = this.state;
+const current = JSON.stringify({ name: cur.name, cost: cur.cost, pt: cur.pt, type: cur.type, rules: cur.rules, art: cur.art, artBg: cur.artBg, shapes: cur.shapes });
+const prompt = [
+'You are editing a doodle-style Magic: The Gathering proxy card. Apply the instruction below to the current card.',
+'Current card as JSON: ' + current,
+'Instruction: ' + text,
+'Rules: change only what the instruction asks for. Do not invent rules text the instruction did not give.',
+'To redraw the art, return shapes: an array of up to 20 objects with d (an SVG path using only M L C Z commands, inside a 440 by 380 box) and fill (a hex color). Outlines are drawn automatically, so give only d and fill. Draw back to front. Use null for shapes to keep the current art.',
+'artBg is a hex color for the art background.',
+'Return only JSON with keys name, cost, pt, type, rules, artBg, shapes. No other text.'
+].join('\n');
+this.setState({ busy: true, note: 'Thinking...' });
+try {
+const out = await sample.json(prompt, { modelTier: 'default', cache: false });
+const upd = {};
+const str = (v, n) => (typeof v === 'string') ? v.slice(0, n) : null;
+const f = { name: 60, cost: 20, pt: 10, type: 80, rules: 500 };
+Object.keys(f).forEach((k) => { const v = str(out[k], f[k]); if (v !== null) { upd[k] = v; } });
+if (typeof out.artBg === 'string' && /^#[0-9a-fA-F]{6}$/.test(out.artBg)) { upd.artBg = out.artBg; }
+if (Array.isArray(out.shapes)) {
+const ok = out.shapes.slice(0, 20).filter((x) => x && typeof x.d === 'string' && /^[MLCZmlcz0-9eE.,\s-]+$/.test(x.d) && x.d.length < 800 && typeof x.fill === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(x.fill));
+if (ok.length > 0) { upd.shapes = ok.map((x) => ({ d: x.d, fill: x.fill })); upd.art = 'custom'; }
+}
+upd.note = 'Updated. Reprompt again to keep refining.';
+upd.instruction = '';
+this.setState(upd);
+} catch (err) {
+const code = err && err.code;
+const msg = code === 'not_granted' ? 'Claude access was declined for this view.' : code === 'rate_limited' ? 'Too many requests, wait a moment and try again.' : 'Could not update the card. Try again.';
+this.setState({ note: msg });
+} finally {
+this.setState({ busy: false });
+}
+},
+loadCard: async () => {
+if (this.state.busy) { return; }
+const link = this.state.link || '';
+const m = link.match(/scryfall\.com\/card\/([a-z0-9]+)\/([a-z0-9]+)(?:\/([a-z0-9-]+))?/i);
+if (!m) {
+this.setState({ status: 'That does not look like a Scryfall card link.' });
+return;
+}
+const set = m[1].toUpperCase();
+const num = m[2];
+const slug = (m[3] || '').toLowerCase();
+if (samples[slug]) {
+this.setState(Object.assign({}, samples[slug], { shapes: [], origUrl: '', origNote: '', status: 'Made ' + samples[slug].name + ' (' + set + ' #' + num + ').' }));
+return;
+}
+let sample = null;
+try { sample = (window.claude && window.claude.use) ? await window.claude.use('sample') : null; } catch (err) { sample = null; }
+if (!sample) { this.setState({ status: 'Making a new card needs Claude access, which is not available in this view.' }); return; }
+this.setState({ busy: true, status: 'Thinking...' });
+const prompt = [
+'Make a doodle-style Magic: The Gathering proxy card from a Scryfall link.',
+'Link: ' + link,
+'Set code: ' + set + ', collector number: ' + num + ', name slug: ' + slug,
+'You cannot open the link. Use what you know about this card. If you do not recognize it, say so in the note field and leave the other text fields empty.',
+'Return only JSON with keys: name, cost (like U or 2R, empty if none), type, rules (use \\n between lines), pt (like 2/3, empty if none), artBg (hex color), shapes, note (one short sentence, mention any uncertainty).',
+'shapes is the art: an array of up to 20 objects with d (an SVG path using only M L C Z commands, inside a 440 by 380 box) and fill (a hex color). Outlines are drawn automatically, so give only d and fill. Draw back to front, in a simple flat doodle style that depicts the card subject.'
+].join('\n');
+try {
+const out = await sample.json(prompt, { modelTier: 'default', cache: false });
+const str = (v, n) => (typeof v === 'string') ? v.slice(0, n) : '';
+const upd = { name: str(out.name, 60), cost: str(out.cost, 20), type: str(out.type, 80), rules: str(out.rules, 500), pt: str(out.pt, 10), shapes: [], art: 'none', artBg: '#E9E4D2', origSample: '', origUrl: '', origNote: '' };
+if (typeof out.artBg === 'string' && /^#[0-9a-fA-F]{6}$/.test(out.artBg)) { upd.artBg = out.artBg; }
+if (Array.isArray(out.shapes)) {
+const ok = out.shapes.slice(0, 20).filter((x) => x && typeof x.d === 'string' && /^[MLCZmlcz0-9eE.,\s-]+$/.test(x.d) && x.d.length < 800 && typeof x.fill === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(x.fill));
+if (ok.length > 0) { upd.shapes = ok.map((x) => ({ d: x.d, fill: x.fill })); upd.art = 'custom'; }
+}
+upd.status = 'Made from ' + set + ' #' + num + '. ' + str(out.note, 200);
+this.setState(upd);
+} catch (err) {
+const code = err && err.code;
+this.setState({ status: code === 'not_granted' ? 'Claude access was declined for this view.' : code === 'rate_limited' ? 'Too many requests, wait a moment and try again.' : 'Could not make the card. Try again.' });
+} finally {
+this.setState({ busy: false });
+}
+}
+};
+}
+}
+</script>
+</body>
+</html>
